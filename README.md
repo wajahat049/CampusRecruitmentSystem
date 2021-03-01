@@ -1,4 +1,4 @@
 # CampusRecruitmentSystem
 
-##Admin Name: Admin //
+##Admin Name: Admin <br/>
 ##Admin Password: 12345
