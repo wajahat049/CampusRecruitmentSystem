@@ -1,4 +1,4 @@
-# CampusRecruitmentSystem
+# Campus Recruitment System
 
 Online Campus Recruitment App built on **React Native** and **Firebase Realtime Database**.
 
