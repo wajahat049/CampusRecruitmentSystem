@@ -2,47 +2,38 @@
 import React,{ useState } from 'react';
 import { View, Text, Button, TextInput,Image,ToastAndroid } from 'react-native';
 import database from "@react-native-firebase/database";
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import {changeiscompany} from "../../Store/action/index"
+import {connect } from "react-redux"
+import Companies from "../Dashboard/Companies"
+
+
 
 function CompaniesLogin(props) {
-  global.DATA=[]
-  var keyss=[]
+  const [name, setName] = useState("");
+  const [pass, setPass] = useState("");
+  const [allcompanies,setAllcompanies]=useState({})
+
   database().ref('/Companies').once("value").then(snapshot=>{
-      var result = snapshot.val();
-      var keys=Object.entries(result)
-      for (var i=0;i<keys.length;i++){
-          keyss.push(keys[i][1])
-      }
-      for (var i=0;i<keyss.length;i++){
-        global.DATA.push(Object.values(keyss[i]))
-    }
-      console.log(global.DATA)
+    setAllcompanies( Object.values(snapshot.val()))
   })
 
   const verify=()=>{
-    for (var i=0;i<global.DATA.length;i++){
-        if(global.DATA[i][1]==pass && global.DATA[i][7]==name){
-            console.log("found Company")
-            props.navigation.navigate("Companies")
-            break
+    for (var i=0;i<allcompanies.length;i++){
+        if(allcompanies[i].pass==pass && allcompanies[i].Name==name){
+          props.changeiscompany(allcompanies[i])
+          console.log("found Comapny")
+          ToastAndroid.show("Login successfully",ToastAndroid.SHORT)
+          break
+           
+        }
+        else{
+          ToastAndroid.show("Incorrect email or password",ToastAndroid.SHORT)
         }
   }
-  getData()
-  }
-  const getData = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('@COMPANY');
-      console.log(jsonValue)
-      global.result = JSON.parse(jsonValue);
-      console.log(global.result) 
-    } catch(e) {
-      console.log(e)
-    } 
-  }
-    const [name, setName] = useState("");
-    const [pass, setPass] = useState("");
+}
+if(props.Company.Name==undefined){
     return(
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center',backgroundColor:"white",paddingTop:50 }}>
+      <View style={{ alignItems: 'center', justifyContent: 'center',marginTop:"20%" }}>
       <View>
         <Text style={{ fontSize: 50, color: '#00b8e6', fontWeight: 'bold' }}>Company Login</Text>
       </View>
@@ -55,13 +46,31 @@ function CompaniesLogin(props) {
       <View style={{ margin: 20, width: 110}}>
         <Button color="#00b8e6" onPress={()=>verify()}  title="Login"></Button>
       </View>
-      <View style={{ margin: 20, width: 110}}>
-        <Button color="#00b8e6" onPress={()=> props.navigation.navigate("CompaniesSignup")}  title="Signup"></Button>
+      
       </View>
-      </View>
-    )
+    )}
+
+    else{
+      return(
+      <Companies navigation={props.navigation}></Companies>
+      )
+    }
 }
  
     
+function mapStateToProps(state) {
+  return {
+      Company:state.Company
+  }
+}
 
-export default CompaniesLogin;
+
+function mapDispatchToProps(dispatch) {
+  return {
+    changeiscompany:(Company)=>dispatch(changeiscompany(Company))
+
+  }
+}
+
+ 
+export default connect(mapStateToProps, mapDispatchToProps)(CompaniesLogin)

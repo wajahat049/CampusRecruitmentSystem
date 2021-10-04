@@ -16,26 +16,25 @@ function StudentsSignUp(props) {
   const [quali, setQuali] = useState("");
   const [field, setField] = useState("");
   const [Age, setAge] = useState("");
-  const save_data=()=>{
-    database().ref(`/Student/`).push({Name, email , pass ,quali, field, Age})
-    const value={Name, email , pass ,quali, field, Age}
-  const storeData = async (value) => {
-    try {
-      const jsonValue = JSON.stringify(value)
-      await AsyncStorage.setItem('@STUDENT', jsonValue)
-    } catch (e) {
-      console.log("error")
-      // saving error
-    }
-  }
-  storeData(value)
-  props.navigation.navigate("StudentsLogin")
 
+  // database().ref("/Students/student1gmail").update({Name:"Student 1", Email:"student1@gmail.com" , Pass:"stud1" ,Qualification:"undergraduate", Field:"Computer", Age:20})
+  // database().ref("/Students/student2gmail").update({Name:"Student 2", Email:"student2@gmail.com" , Pass:"stud2" ,Qualification:"undergraduate", Field:"Computer", Age:21})
+  // database().ref("/Students/student3gmail").update({Name:"Student 3", Email:"student3@gmail.com" , Pass:"stud3" ,Qualification:"undergraduate", Field:"Computer", Age:22})
+  // database().ref("/Students/student4gmail").update({Name:"Student 4", Email:"student4@gmail.com" , Pass:"stud4" ,Qualification:"undergraduate", Field:"Computer", Age:23})
+  // database().ref("/Students/student5gmail").update({Name:"Student 5", Email:"student5@gmail.com" , Pass:"stud5" ,Qualification:"undergraduate", Field:"Computer", Age:24})
+  
+
+
+  const save_data=()=>{
+    var emailSplit=Email.split("@")
+
+    database().ref(`/Students/${emailSplit[0]}`).update({Name, Email , Pass ,Qualification, Field, Age})
+    
+  props.navigation.navigate("StudentsLogin")
   }
   
   return (
-
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+    <View style={{ alignItems: 'center', justifyContent: 'center'}}>
       <View>
         <Text style={{ fontSize: 50, color: '#00b8e6', fontWeight: 'bold',marginBottom:10 }}>SignUp</Text>
       </View>
@@ -43,7 +42,7 @@ function StudentsSignUp(props) {
         <TextInput value={Name} onChangeText={(e) => setName(e)} placeholder="Name" />
       </View>
       <View style={{borderWidth:3,borderColor:"#00b8e6",width:"80%", margin:5}}>
-        <TextInput value={email} onChangeText={(e)=>setEmail(e)} placeholder="Email"/>
+        <TextInput value={email} keyboardType={"email-address"} onChangeText={(e)=>setEmail(e)} placeholder="Email"/>
       </View>
       <View style={{ borderWidth: 3, borderColor: "#00b8e6", width: "80%", margin: 5 }}>
         <TextInput secureTextEntry={true} value={pass} onChangeText={(e) => setPass(e)} placeholder="Password" />
@@ -55,7 +54,7 @@ function StudentsSignUp(props) {
         <TextInput  value={field} onChangeText={(e) => setField(e)} placeholder="Field" />
       </View>
       <View style={{ borderWidth: 3, borderColor: "#00b8e6", width: "80%", margin: 5 }}>
-        <TextInput  value={Age} onChangeText={(e) => setAge(e)} placeholder="Age" />
+        <TextInput  value={Age} keyboardType={"numeric"} onChangeText={(e) => setAge(e)} placeholder="Age" />
       </View>
     <View>
       <View style={{marginTop:10, width:150}}>

@@ -2,47 +2,44 @@
 import React,{ useState } from 'react';
 import { View, Text, Button, TextInput,Image,ToastAndroid } from 'react-native';
 import database from "@react-native-firebase/database";
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import {changeisstudent} from "../../Store/action/index"
+import {connect } from "react-redux"
+// import Students from "../Dashboard/Students"
+
 
 function StudentsLogin(props) {
-  global.DATA=[]
-  var keyss=[]
-  database().ref('/Student').once("value").then(snapshot=>{
-      var result = snapshot.val();
-      var keys=Object.entries(result)
-      for (var i=0;i<keys.length;i++){
-          keyss.push(keys[i][1])
-      }
-      for (var i=0;i<keyss.length;i++){
-        global.DATA.push(Object.values(keyss[i]))
-    }
+  const [name, setName] = useState("");
+  const [pass, setPass] = useState("");
+  const [allstudents,setAllstudents]=useState([])
+  database().ref('/Students').once("value").then(snapshot=>{
+      setAllstudents( Object.values(snapshot.val()))
   })
 
   const verify=()=>{
-    console.log("Datataaa",global.DATA)
-    for (var i=0;i<global.DATA.length;i++){
-        if(global.DATA[i][4]==pass && global.DATA[i][5]==name){
+  
+    for (var i=0;i<allstudents.length;i++){
+        if(allstudents[i].Name==name && allstudents[i].Pass==pass){
             console.log("found Student")
+            props.changeisstudent(allstudents[i])
+            ToastAndroid.show("Login successfully",ToastAndroid.SHORT)
             props.navigation.navigate("Students")
+            break
+        
+            
+        }
+        else{
+          ToastAndroid.show("Incorrect email or password",ToastAndroid.SHORT)
+
+          
         }
   }
 
-  getData();
-  }
-  const getData = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('@STUDENT');
-      console.log(jsonValue)
-      global.result = JSON.parse(jsonValue);
-      console.log(global.result) 
-    } catch(e) {
-      console.log(e)
-    } 
-  }
-    const [name, setName] = useState("");
-    const [pass, setPass] = useState("");
+}
+
+ 
     return(
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center',backgroundColor:"white",paddingTop:50 }}>
+     
+      <View style={{ alignItems: 'center', justifyContent: 'center',marginBottom:"75%",marginTop:"22%" }}>
       <View>
         <Text style={{ fontSize: 50, color: '#00b8e6', fontWeight: 'bold' }}>Student Login</Text>
       </View>
@@ -55,13 +52,25 @@ function StudentsLogin(props) {
       <View style={{ margin: 20, width: 110}}>
         <Button color="#00b8e6" onPress={()=>verify()}  title="Login"></Button>
       </View>
-      <View style={{ margin: 20, width: 110}}>
-        <Button color="#00b8e6" onPress={()=> props.navigation.navigate("StudentsSignup")}  title="Signup"></Button>
-      </View>
+            
       </View>
     )
 }
- 
-    
 
-export default StudentsLogin;
+
+function mapStateToProps(state) {
+  return {
+      Student:state.Student
+  }
+}
+
+
+function mapDispatchToProps(dispatch) {
+  return {
+    changeisstudent:(Student)=>dispatch(changeisstudent(Student))
+
+  }
+}
+
+ 
+export default connect(mapStateToProps, mapDispatchToProps)(StudentsLogin)

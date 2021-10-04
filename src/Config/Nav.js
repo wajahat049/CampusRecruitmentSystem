@@ -13,10 +13,18 @@ import CompaniesSignup from "../Components/Sign/CompaniesSignup"
 import AdminLogin from "../Components/Sign/AdminLogin"
 import StudentsLogin from "../Components/Sign/StudentsLogin"
 import CompaniesLogin from "../Components/Sign/CompaniesLogin"
+import AdminToggle from "../Components/Sign/Admintoggle"
+import Studenttoggle from "../Components/Sign/Studenttoggle"
+import Companytoggle from "../Components/Sign/Companytoggle"
 import CompaniesInfo from "../Components/Info/CompaniesInfo"
 import StudentsInfo from "../Components/Info/StudentsInfo"
 import StudentProfile from "../Components/Profile/StudentProfile"
 import CompaniesProfile from "../Components/Profile/CompaniesProfile"
+import CompanyHire from "../Components/Apply-and_Hire/Company_hire_student"
+import StudentRequest from "../Components/Apply-and_Hire/Student_Apply_to_job"
+
+
+
 
 
 const Stack = createStackNavigator();
@@ -39,6 +47,11 @@ const Nav=()=> {
           <Stack.Screen name="StudentsInfo" component={StudentsInfo} />
           <Stack.Screen name="StudentProfile" component={StudentProfile} />
           <Stack.Screen name="CompaniesProfile" component={CompaniesProfile} />
+          <Stack.Screen name="CompanyHire" component={CompanyHire} />
+          <Stack.Screen name="StudentRequest" component={StudentRequest} />
+          <Stack.Screen name="AdminToggle" component={AdminToggle} />
+          <Stack.Screen name="Studenttoggle" component={Studenttoggle} />
+          <Stack.Screen name="Companytoggle" component={Companytoggle} />
 
 
 

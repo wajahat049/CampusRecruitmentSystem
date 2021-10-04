@@ -15,40 +15,36 @@ function CompaniesSignUp(props) {
   const [salary, setSalary] = useState("");
   const [description, setDescription] = useState("");
   const [experience, setExperience] = useState("");
+
+  // database().ref(`/Companies/company1gmail`).update({ Name:"Company1", email:"Company1@gmial.com", pass:"Comp1", job:"Developer", salary:50000, description:"good web developer", experience:"1 year" })
+  // database().ref(`/Companies/company2gmail`).update({ Name:"Company2", email:"Company2@gmial.com", pass:"Comp2", job:"Developer", salary:60000, description:"good web developer", experience:"1 year" })
+  // database().ref(`/Companies/company3gmail`).update({ Name:"Company3", email:"Company3@gmial.com", pass:"Comp3", job:"Developer", salary:70000, description:"good web developer", experience:"1 year" })
+  // database().ref(`/Companies/company4gmail`).update({ Name:"Company4", email:"Company4@gmial.com", pass:"Comp4", job:"Developer", salary:80000, description:"good web developer", experience:"1 year" })
+  // database().ref(`/Companies/company5gmail`).update({ Name:"Company5", email:"Company5@gmial.com", pass:"Comp5", job:"Developer", salary:90000, description:"good web developer", experience:"1 year" })
+
+
   const save_data = () => {
+    var emailSplit=Email.split("@")
+
+    database().ref(`/Companies/${emailSplit[0]}`).update({ Name, email, pass, job, salary, description, experience })
     
-    database().ref(`/Companies/`).push({ Name, email, pass, company, job, salary, description, experience })
-    const value={Name, email , pass ,company, job, salary, description, experience}
-  const storeData = async (value) => {
-    try {
-      const jsonValue = JSON.stringify(value)
-      await AsyncStorage.setItem('@COMPANY', jsonValue)
-    } catch (e) {
-      console.log("error")
-      // saving error
-    }
-  }
-  storeData(value)
   props.navigation.navigate("CompaniesLogin")
 
   }
 
   return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{ alignItems: 'center', justifyContent: 'center',marginTop:"10%" }}>
         <View>
           <Text style={{ fontSize: 40, color: '#00b8e6', fontWeight: 'bold', bottom:11 }}>SignUp</Text>
         </View>
         <View style={{ borderWidth: 3, borderColor: "#00b8e6", width: "80%", margin: 1 }}>
-          <TextInput value={Name} onChangeText={(e) => setName(e)} placeholder="Name" />
+          <TextInput value={Name} onChangeText={(e) => setName(e)} placeholder="Company Name" />
         </View>
         <View style={{ borderWidth: 3, borderColor: "#00b8e6", width: "80%", margin: 1 }}>
-          <TextInput value={email} onChangeText={(e) => setEmail(e)} placeholder="Email" />
+          <TextInput value={email} keyboardType={"email-address"} onChangeText={(e) => setEmail(e)} placeholder="Email" />
         </View>
         <View style={{ borderWidth: 3, borderColor: "#00b8e6", width: "80%", margin: 1 }}>
           <TextInput secureTextEntry={true} value={pass} onChangeText={(e) => setPass(e)} placeholder="Password" />
-        </View>
-        <View style={{ borderWidth: 3, borderColor: "#00b8e6", width: "80%", margin: 1 }}>
-          <TextInput value={company} onChangeText={(e) => setCompany(e)} placeholder="Company Name" />
         </View>
         <View style={{ borderWidth: 3, borderColor: "#00b8e6", width: "80%", margin: 1 }}>
           <TextInput value={job} onChangeText={(e) => setJob(e)} placeholder="Job Name" />

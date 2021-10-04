@@ -7,6 +7,7 @@
  */
 
 import React from 'react';
+import {Provider} from "react-redux"
 import {
   SafeAreaView,
   StyleSheet,
@@ -26,56 +27,23 @@ import {
 import Home from "./src/Components/Home"
 import Nav from "./src/Config/Nav"
 
+import store from './src/Store';
 
 const App=(props) => {
   return (
-   
-    <Nav>
+  <Provider store={store}>
+        <Nav>
        <ScrollView>
       <Home/>
       </ScrollView>
-    </Nav>
+      </Nav>
+    
+    </Provider>
+    
 
   );
 };
 
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
-});
+
 
 export default App;
